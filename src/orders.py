@@ -1,5 +1,19 @@
-def calculate_items_subtotal(items):
-    subtotal = 0
+from typing import TypedDict
+
+
+class OrderItem(TypedDict):
+    price: float
+    qty: int
+
+
+class Order(TypedDict):
+    items: list[OrderItem]
+    member: bool
+    country: str
+
+
+def calculate_items_subtotal(items: list[OrderItem]) -> float:
+    subtotal: float = 0
 
     for item in items:
         price = item["price"]
@@ -15,7 +29,7 @@ def calculate_items_subtotal(items):
     return subtotal
 
 
-def calculate_member_discount(subtotal, is_member):
+def calculate_member_discount(subtotal: float, is_member: bool) -> float:
     if is_member != True:
         return 0
     if subtotal > 100:
@@ -26,7 +40,7 @@ def calculate_member_discount(subtotal, is_member):
     return 0
 
 
-def calculate_shipping_cost(country):
+def calculate_shipping_cost(country: str) -> int:
     if country == "PK":
         return 5
     if country == "US":
@@ -35,7 +49,7 @@ def calculate_shipping_cost(country):
     return 25
 
 
-def calculate_order_total(order):
+def calculate_order_total(order: Order) -> float:
     subtotal = calculate_items_subtotal(order["items"])
     discount = calculate_member_discount(subtotal, order["member"])
     shipping_cost = calculate_shipping_cost(order["country"])
